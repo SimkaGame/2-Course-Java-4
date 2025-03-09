@@ -1,11 +1,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans.xsd">
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="person" class="com.example.demo.Person">
-        <constructor-arg value="Имя" />
-        <constructor-arg value="Фамилия" />
-        <constructor-arg value="1990-01-01" />
+        <constructor-arg value="Дмитрий" />
+        <constructor-arg value="Минин" />
+        <constructor-arg value="2002-02-22" />
     </bean>
 </beans>
