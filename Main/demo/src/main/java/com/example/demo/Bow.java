@@ -13,4 +13,10 @@ public class Bow extends AbstractWeapon {
     public String getType() {
         return "Лук";
     }
+
+    public void initialize() {
+    }
+
+    public void cleanup() {
+    }
 }

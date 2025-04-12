@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Подготовка к бою</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+        input, select {
+            padding: 5px;
+            width: 200px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<h1>Подготовка к бою</h1>
+<!-- Показываем ошибку, если она есть -->
+<div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
+<form action="/fight" method="get">
+    <label>
+        Здоровье врага (1–100):
+        <input type="number" name="num1" step="1" min="1" max="100" value="50" required
+               title="Введите здоровье врага от 1 до 100 (50 — средний враг)">
+    </label>
+    <label>
+        Защита врага (0–50):
+        <input type="number" name="num2" step="1" min="0" max="50" value="10" required
+               title="Введите защиту врага от 0 до 50 (10 — слабая защита)">
+    </label>
+    <label>
+        Выберите оружие:
+        <select name="operation" required>
+            <option th:each="weapon : ${weapons}"
+                    th:value="${weapon.type}"
+                    th:text="${weapon.type} + ' (Урон: ' + ${weapon.damage} + ', Материал: ' + ${weapon.material} + ')'"></option>
+        </select>
+    </label>
+    <button type="submit">Сразиться!</button>
+</form>
+<p>
+    <a href="/weapons">Вернуться к списку оружия</a>
+</p>
+</body>
+</html>
