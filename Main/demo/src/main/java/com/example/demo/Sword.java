@@ -13,11 +13,4 @@ public class Sword extends AbstractWeapon {
     public String getType() {
         return "Меч";
     }
-
-    // Добавлено для совместимости с beans.xml (можно убрать, если XML не используется)
-    public void initialize() {
-    }
-
-    public void cleanup() {
-    }
 }

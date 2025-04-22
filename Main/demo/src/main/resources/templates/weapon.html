@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Детали оружия</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            font-size: 16px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<h1>Детали оружия</h1>
+<div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
+<div th:if="${weapon}">
+    <p><strong>Тип:</strong> <span th:text="${weapon.type}"></span></p>
+    <p><strong>Урон:</strong> <span th:text="${weapon.damage}"></span></p>
+    <p><strong>Материал:</strong> <span th:text="${weapon.material}"></span></p>
+</div>
+<a href="/weapons">Назад к списку оружия</a>
+<br>
+<a href="/fight-form">К форме боя</a>
+</body>
+</html>

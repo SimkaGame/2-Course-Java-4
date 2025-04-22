@@ -13,10 +13,4 @@ public class Gun extends AbstractWeapon {
     public String getType() {
         return "Огнестрельное оружие";
     }
-
-    public void initialize() {
-    }
-
-    public void cleanup() {
-    }
 }

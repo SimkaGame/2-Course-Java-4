@@ -44,8 +44,8 @@ public class WeaponController {
             }
 
             // Расчет боя
-            double weaponDamage = ((AbstractWeapon) selectedWeapon).getDamage();
-            double effectiveDamage = Math.max(0, weaponDamage - enemyArmor); // Урон после учета защиты
+            int weaponDamage = selectedWeapon.getDamage();
+            double effectiveDamage = Math.max(0, (double) weaponDamage - enemyArmor); // Приводим к double
             double remainingHp = enemyHp - effectiveDamage;
 
             // Определяем результат
@@ -74,5 +74,22 @@ public class WeaponController {
     public String showFightForm(Model model) {
         model.addAttribute("weapons", weapons);
         return "fight-form";
+    }
+
+    @GetMapping("/weapon")
+    public String showWeaponDetails(@RequestParam("type") String type, Model model) {
+        Weapon selectedWeapon = null;
+        for (Weapon weapon : weapons) {
+            if (weapon.getType().equalsIgnoreCase(type)) {
+                selectedWeapon = weapon;
+                break;
+            }
+        }
+        if (selectedWeapon == null) {
+            model.addAttribute("errorMessage", "Оружие не найдено: " + type);
+            return "redirect:/weapons"; // Перенаправляем на список оружия
+        }
+        model.addAttribute("weapon", selectedWeapon);
+        return "weapon"; // Возвращаем шаблон weapon.html
     }
 }

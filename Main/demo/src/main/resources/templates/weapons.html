@@ -2,14 +2,33 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Все оружия</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        .weapon {
+            margin-bottom: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 <h1>Список всех оружий</h1>
-<div th:each="weapon : ${weapons}">
+<div th:each="weapon : ${weapons}" class="weapon">
     <h2 th:text="${weapon.type}"></h2>
     <p>Материал: <span th:text="${weapon.material}"></span></p>
     <p>Урон: <span th:text="${weapon.damage}"></span></p>
+    <p><a th:href="@{/weapon(type=${weapon.type})}">Подробности</a></p>
     <hr>
 </div>
+<a href="/fight-form">К форме боя</a>
 </body>
 </html>
