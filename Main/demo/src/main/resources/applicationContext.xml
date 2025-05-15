@@ -1,33 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
-    
-    <bean id="sword" class="com.example.demo.Sword" scope="prototype" init-method="initialize" destroy-method="cleanup">
+
+    <bean id="sword" class="com.example.demo.Sword" scope="prototype">
         <property name="material" value="Сталь" />
         <property name="damage" value="50" />
     </bean>
 
-    <bean id="swordDisplay" class="com.example.demo.WeaponDisplay">
-        <constructor-arg ref="sword" />
-    </bean>
-
-    <bean id="gun" class="com.example.demo.Gun" scope="singleton" init-method="initialize" destroy-method="cleanup">
+    <bean id="gun" class="com.example.demo.Gun" scope="singleton">
         <property name="material" value="Металл" />
         <property name="damage" value="100" />
     </bean>
 
-    <bean id="gunDisplay" class="com.example.demo.WeaponDisplay">
-        <constructor-arg ref="gun" />
-    </bean>
-
-    <bean id="bow" class="com.example.demo.Bow" scope="prototype" init-method="initialize" destroy-method="cleanup">
+    <bean id="bow" class="com.example.demo.Bow" scope="prototype">
         <property name="material" value="Древесина" />
         <property name="damage" value="25" />
     </bean>
-
-    <bean id="bowDisplay" class="com.example.demo.WeaponDisplay">
-        <constructor-arg ref="bow" />
-    </bean>
-
 </beans>

@@ -1,8 +1,5 @@
 package com.example.demo;
 
-import org.springframework.stereotype.Component;
-
-@Component("sword")
 public class Sword extends AbstractWeapon {
     public Sword() {
         this.material = "Сталь";

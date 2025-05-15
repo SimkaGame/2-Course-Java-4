@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Редактировать оружие</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, button {
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button.delete {
+            background-color: #dc3545;
+        }
+        button.delete:hover {
+            background-color: #c82333;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<h1>Редактировать оружие</h1>
+<div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
+<form th:action="@{/weapon}" method="post">
+    <input type="hidden" name="type" th:value="${weapon.type}">
+    <label for="damage">Урон:</label>
+    <input type="number" id="damage" name="damage" th:value="${weapon.damage}">
+    <label for="material">Материал:</label>
+    <input type="text" id="material" name="material" th:value="${weapon.material}">
+    <button type="submit">Сохранить изменения</button>
+</form>
+<form th:action="@{/weapon/delete}" method="post">
+    <input type="hidden" name="type" th:value="${weapon.type}">
+    <button type="submit" class="delete">Удалить оружие</button>
+</form>
+<a href="/weapons">Назад к списку оружия</a>
+</body>
+</html>

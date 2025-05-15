@@ -14,6 +14,7 @@
         a {
             color: #007bff;
             text-decoration: none;
+            margin-right: 10px;
         }
         a:hover {
             text-decoration: underline;
@@ -27,7 +28,10 @@
     <h2 th:text="${weapon.type}"></h2>
     <p>Материал: <span th:text="${weapon.material}"></span></p>
     <p>Урон: <span th:text="${weapon.damage}"></span></p>
-    <p><a th:href="@{/weapon(type=${weapon.type})}">Подробности</a></p>
+    <p>
+        <a th:href="@{/weapon(type=${weapon.type})}">Подробности</a>
+        <a th:href="@{/edit-weapon(type=${weapon.type})}">Редактировать</a>
+    </p>
     <hr>
 </div>
 <a href="/fight-form">К форме боя</a>

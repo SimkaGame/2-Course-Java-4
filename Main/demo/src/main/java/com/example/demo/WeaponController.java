@@ -3,9 +3,7 @@ package com.example.demo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +14,7 @@ public class WeaponController {
 
     @Autowired
     public WeaponController(List<Weapon> initialWeapons) {
-        this.weapons = new ArrayList<>(initialWeapons); // Копируем начальные бины в ArrayList
+        this.weapons = new ArrayList<>(initialWeapons);
     }
 
     @GetMapping("/weapons")
@@ -91,20 +89,17 @@ public class WeaponController {
         return "weapon";
     }
 
-    // Новый эндпоинт для формы добавления
     @GetMapping("/add-weapon")
     public String showAddWeaponForm(Model model) {
         return "add-weapon";
     }
 
-    // Новый эндпоинт для обработки формы
     @PostMapping("/add-weapon")
     public String addWeapon(
             @RequestParam("type") String type,
             @RequestParam("damage") int damage,
             @RequestParam("material") String material,
             Model model) {
-        // Простая валидация
         if (type == null || type.trim().isEmpty()) {
             model.addAttribute("errorMessage", "Тип оружия не может быть пустым");
             return "add-weapon";
@@ -118,7 +113,6 @@ public class WeaponController {
             return "add-weapon";
         }
 
-        // Проверка на уникальность типа
         for (Weapon weapon : weapons) {
             if (weapon.getType().equalsIgnoreCase(type)) {
                 model.addAttribute("errorMessage", "Оружие с типом '" + type + "' уже существует");
@@ -126,10 +120,74 @@ public class WeaponController {
             }
         }
 
-        // Добавление нового оружия
         Weapon newWeapon = new CustomWeapon(type, damage, material);
         weapons.add(newWeapon);
+        return "redirect:/weapons";
+    }
 
-        return "redirect:/weapons"; // Перенаправление на список оружий
+    @GetMapping("/edit-weapon")
+    public String showEditWeaponForm(@RequestParam("type") String type, Model model) {
+        Weapon selectedWeapon = null;
+        for (Weapon weapon : weapons) {
+            if (weapon.getType().equalsIgnoreCase(type)) {
+                selectedWeapon = weapon;
+                break;
+            }
+        }
+        if (selectedWeapon == null) {
+            model.addAttribute("errorMessage", "Оружие не найдено: " + type);
+            return "redirect:/weapons";
+        }
+        model.addAttribute("weapon", selectedWeapon);
+        return "edit-weapon";
+    }
+
+    @PostMapping("/weapon")
+    public String updateWeapon(
+            @RequestParam("type") String type,
+            @RequestParam(value = "damage", required = false) Integer damage,
+            @RequestParam(value = "material", required = false) String material,
+            Model model) {
+        Weapon weaponToUpdate = null;
+        int index = -1;
+        for (int i = 0; i < weapons.size(); i++) {
+            if (weapons.get(i).getType().equalsIgnoreCase(type)) {
+                weaponToUpdate = weapons.get(i);
+                index = i;
+                break;
+            }
+        }
+
+        if (weaponToUpdate == null) {
+            model.addAttribute("errorMessage", "Оружие не найдено: " + type);
+            return "edit-weapon";
+        }
+
+        if (damage != null && damage < 0) {
+            model.addAttribute("errorMessage", "Урон не может быть отрицательным");
+            model.addAttribute("weapon", weaponToUpdate);
+            return "edit-weapon";
+        }
+        if (material != null && (material.trim().isEmpty())) {
+            model.addAttribute("errorMessage", "Материал не может быть пустым");
+            model.addAttribute("weapon", weaponToUpdate);
+            return "edit-weapon";
+        }
+
+        String newMaterial = material != null ? material : weaponToUpdate.getMaterial();
+        int newDamage = damage != null ? damage : weaponToUpdate.getDamage();
+        Weapon updatedWeapon = new CustomWeapon(type, newDamage, newMaterial);
+        weapons.set(index, updatedWeapon);
+        return "redirect:/weapons";
+    }
+
+    @PostMapping("/weapon/delete")
+    public String deleteWeapon(@RequestParam("type") String type, Model model) {
+        boolean removed = weapons.removeIf(weapon -> weapon.getType().equalsIgnoreCase(type));
+        if (!removed) {
+            model.addAttribute("errorMessage", "Не удалось удалить оружие: " + type);
+            return "redirect:/weapons";
+        }
+        return "redirect:/weapons";
     }
 }
