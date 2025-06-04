@@ -2,18 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Результат боя</title>
-    <style>
-        .victory { color: green; }
-        .defeat { color: red; }
-    </style>
+    <meta charset="UTF-8">
 </head>
 <body>
 <h1>Результат боя</h1>
-<p>Враг: Здоровье <span th:text="${enemyHp}"></span>, Защита <span th:text="${enemyArmor}"></span></p>
-<p>Оружие: <span th:text="${weapon.type}"></span> (Урон: <span th:text="${weapon.damage}"></span>, Материал: <span th:text="${weapon.material}"></span>)</p>
-<p>Нанесенный урон: <span th:text="${effectiveDamage}"></span></p>
-<h2 th:class="${isEnemyDefeated} ? 'victory' : 'defeat'" th:text="${fightResult}"></h2>
-<a href="/fight-form">Новая битва</a><br>
-<a href="/weapons">Вернуться к списку оружия</a>
+<p>Здоровье врага: <span th:text="${enemyHp}"></span></p>
+<p>Броня врага: <span th:text="${enemyArmor}"></span></p>
+<p>Оружие: <span th:text="${weapon?.type ?: 'Не выбрано'}"></span></p>
+<p>Эффективный урон: <span th:text="${effectiveDamage}"></span></p>
+<p>Оставшееся здоровье: <span th:text="${remainingHp}"></span></p>
+<p th:text="${fightResult}"></p>
+<a href="/fight-form" style="display: inline-block; background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Новый бой</a>
+<a href="/weapons" style="display: inline-block; background-color: #2196F3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Назад</a>
 </body>
 </html>

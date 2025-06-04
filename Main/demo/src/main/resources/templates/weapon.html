@@ -2,43 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Детали оружия</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 20px auto;
+    <meta charset="UTF-8">
+    <script>
+        function deleteWeapon(event) {
+            event.preventDefault();
+            const type = document.querySelector('input[name="type"]').value;
+            fetch('/weapon?type=' + encodeURIComponent(type), {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            }).then(response => {
+                if (response.ok || response.redirected) {
+                    window.location.href = '/weapons';
+                } else {
+                    response.text().then(text => {
+                        document.getElementById('error').innerText = 'Ошибка: ' + text;
+                    });
+                }
+            }).catch(error => {
+                document.getElementById('error').innerText = 'Ошибка: ' + error.message;
+            });
         }
-        h1 {
-            color: #333;
-        }
-        p {
-            font-size: 16px;
-        }
-        .error {
-            color: red;
-            font-weight: bold;
-        }
-        a {
-            display: inline-block;
-            margin-top: 20px;
-            text-decoration: none;
-            color: #007bff;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    </script>
 </head>
 <body>
 <h1>Детали оружия</h1>
-<div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
-<div th:if="${weapon}">
-    <p><strong>Тип:</strong> <span th:text="${weapon.type}"></span></p>
-    <p><strong>Урон:</strong> <span th:text="${weapon.damage}"></span></p>
-    <p><strong>Материал:</strong> <span th:text="${weapon.material}"></span></p>
-</div>
-<a href="/weapons">Назад к списку оружия</a>
-<br>
-<a href="/fight-form">К форме боя</a>
+<div id="error" style="color: red;" th:text="${errorMessage}"></div>
+<p>Тип: <span th:text="${weapon?.type}"></span></p>
+<p>Урон: <span th:text="${weapon?.damage}"></span></p>
+<p>Материал: <span th:text="${weapon?.material}"></span></p>
+<a th:href="@{/edit-weapon(type=${weapon?.type})}" style="display: inline-block; background-color: #FFC107; color: black; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Редактировать</a>
+<form onsubmit="deleteWeapon(event)">
+    <input type="hidden" name="type" th:value="${weapon.type}">
+    <button type="submit" style="background-color: #f44336; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Удалить</button>
+</form>
+<a href="/weapons" style="display: inline-block; background-color: #2196F3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Назад</a>
 </body>
 </html>

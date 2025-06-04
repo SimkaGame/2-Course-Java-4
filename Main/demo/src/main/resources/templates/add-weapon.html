@@ -2,60 +2,44 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Добавить оружие</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 20px auto;
+    <meta charset="UTF-8">
+    <script>
+        function addWeapon(event) {
+            event.preventDefault();
+            const form = event.target;
+            const data = new FormData(form);
+            fetch('/add-weapon', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(data)
+            }).then(response => {
+                if (response.ok || response.redirected) {
+                    window.location.href = '/weapons';
+                } else {
+                    response.text().then(text => {
+                        document.getElementById('error').innerText = 'Ошибка: ' + text;
+                    });
+                }
+            }).catch(error => {
+                document.getElementById('error').innerText = 'Ошибка: ' + error.message;
+            });
         }
-        label {
-            display: block;
-            margin: 10px 0;
-        }
-        input {
-            padding: 5px;
-            width: 200px;
-        }
-        button {
-            padding: 10px 20px;
-            margin-top: 10px;
-        }
-        .error {
-            color: red;
-            font-weight: bold;
-        }
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    </script>
 </head>
 <body>
-<h1>Добавить новое оружие</h1>
-<div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
-<form action="/add-weapon" method="post">
-    <label>
-        Тип оружия:
-        <input type="text" name="type" required
-               title="Введите уникальный тип оружия (например, Топор)">
-    </label>
-    <label>
-        Урон (0 или больше):
-        <input type="number" name="damage" min="0" value="10" required
-               title="Введите урон оружия (например, 30)">
-    </label>
-    <label>
-        Материал:
-        <input type="text" name="material" required
-               title="Введите материал оружия (например, Дерево)">
-    </label>
-    <button type="submit">Добавить оружие</button>
+<h1>Добавить оружие</h1>
+<div id="error" style="color: red;" th:text="${errorMessage}"></div>
+<form onsubmit="addWeapon(event)">
+    <label for="type">Тип:</label>
+    <input type="text" id="type" name="type" required>
+    <label for="damage">Урон:</label>
+    <input type="number" id="damage" name="damage" required>
+    <label for="material">Материал:</label>
+    <input type="text" id="material" name="material" required>
+    <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Добавить</button>
 </form>
-<p>
-    <a href="/weapons">Вернуться к списку оружия</a>
-</p>
+<a href="/weapons" style="display: inline-block; background-color: #2196F3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Назад</a>
 </body>
 </html>
